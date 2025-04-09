@@ -38,7 +38,7 @@ git push origin main
 ```
 
 5. **Publish with GitHub Pages**:
-   - Go to your repository’s **Settings** > **Pages**.
+   - Go to your repository's **Settings** > **Pages**.
    - Choose the branch (`main`) and the root folder.
    - Click **Save**.
    - Your site will be live at:  
@@ -46,17 +46,11 @@ git push origin main
 
 Replace `your-username` with your actual GitHub username.
 
----
+
 
 ## 🌐 Live Demo
 
 **Live URL:** [tahash4h.github.io](tahash4h.github.io)  
-
----
-
-### 🖥 Homepage Layout Preview  
-![Home Page Screenshot](homepage.png)
-
 
 ---
 
