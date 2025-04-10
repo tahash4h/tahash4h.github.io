@@ -50,7 +50,7 @@ Replace `your-username` with your actual GitHub username.
 
 ## 🌐 Live Demo
 
-**Live URL:** [tahash4h.github.io](tahash4h.github.io)  
+**Live URL:** [tahash4h.github.io](https://tahash4h.github.io/)  
 
 ---
 
