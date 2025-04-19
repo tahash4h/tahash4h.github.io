@@ -284,3 +284,269 @@
     color: white;
   }
   
+
+  .review-form-section {
+    margin-top: 40px;
+    background-color: #fefefe;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+  
+  .review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+  }
+  
+  .review-form input,
+  .review-form textarea,
+  .review-form select,
+  .review-form button {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  .review-form button {
+    background-color: #5a67d8;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .review-form button:hover {
+    background-color: #434190;
+  }
+  
+  /* Reviews Page Styles */
+  .page-content {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+
+  .page-content h2 {
+    font-size: 2.5em;
+    color: #2d3748;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .page-content > p {
+    text-align: center;
+    font-size: 1.2em;
+    color: #4a5568;
+    margin-bottom: 40px;
+  }
+
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 50px;
+  }
+
+  .review-card {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+
+  .review-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .review-card h3 {
+    color: #2d3748;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+  }
+
+  .review-card .author {
+    color: #718096;
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+
+  .review-card .rating {
+    color: #f6ad55;
+    font-size: 1.2em;
+    margin: 10px 0;
+  }
+
+  .review-card .review-text {
+    color: #4a5568;
+    line-height: 1.6;
+  }
+
+  .review-card .reviewer {
+    margin-top: 15px;
+    color: #718096;
+    font-size: 0.9em;
+    text-align: right;
+  }
+
+  .review-form-section {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+  }
+
+  .review-form-section h3 {
+    color: #2d3748;
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  .review-form {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .review-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #4a5568;
+    font-weight: 500;
+  }
+
+  .review-form input,
+  .review-form select,
+  .review-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 1em;
+  }
+
+  .review-form button {
+    background-color: #5a67d8;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+  }
+
+  .review-form button:hover {
+    background-color: #4c51bf;
+  }
+  
+  /* Logo link styling */
+  .logo a {
+    text-decoration: none;
+    color: white;
+  }
+
+  .logo a:hover {
+    text-decoration: none;
+  }
+  
+  /* Auth Pages Styles */
+  .auth-container {
+    min-height: calc(100vh - 300px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background-color: #edf2f7;
+  }
+
+  .auth-form-container {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .auth-form-container h2 {
+    color: #2d3748;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+  }
+
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .auth-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .auth-form .form-group label {
+    color: #4a5568;
+    font-weight: 500;
+  }
+
+  .auth-form .form-group input {
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+    font-size: 1em;
+  }
+
+  .auth-form .form-group.checkbox {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .auth-button {
+    background-color: #5a67d8;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+  }
+
+  .auth-button:hover {
+    background-color: #4c51bf;
+    transform: translateY(-2px);
+  }
+
+  .auth-link {
+    text-align: center;
+    color: #4a5568;
+  }
+
+  .auth-link a {
+    color: #5a67d8;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .auth-link a:hover {
+    text-decoration: underline;
+  }
+
+  .auth-form .form-group i {
+    margin-right: 8px;
+    color: #5a67d8;
+  }
+  

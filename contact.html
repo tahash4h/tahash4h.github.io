@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Finder - Contact</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .contact-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: #2d3748;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background-color: #5a67d8;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #4c51bf;
+            transform: translateY(-2px);
+        }
+
+        .success-message {
+            display: none;
+            background-color: #48bb78;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html">
+                <h1>📚 Book Finder</h1>
+            </a>
+        </div>
+        <nav>
+            <a href="booksrec.html">Recommendations</a>
+            <a href="ratings.html">Reviews</a>
+            <a href="booklist.html">Book List</a>
+            <a href="search.html">Search</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <div class="auth-buttons">
+            <a href="#" class="btn btn-login">Login</a>
+            <a href="#" class="btn">Sign Up</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Get in Touch</h2>
+                <p>Have questions about books or feedback? We'd love to hear from you!</p>
+            </div>
+        </section>
+
+        <div class="contact-container">
+            <form id="contactForm" class="contact-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+            <div id="successMessage" class="success-message">
+                Thank you for your message! We'll get back to you soon.
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Book Finder</h3>
+                <p>Your ultimate destination for discovering new books and connecting with fellow readers.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="booksrec.html">Book Recommendations</a></li>
+                    <li><a href="ratings.html">Book Reviews</a></li>
+                    <li><a href="booklist.html">My Book List</a></li>
+                    <li><a href="search.html">Search Books</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="#" class="social-link">📘 Facebook</a>
+                    <a href="#" class="social-link">📸 Instagram</a>
+                    <a href="#" class="social-link">🐦 Twitter</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Book Finder. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+        </div>
+    </footer>
+    <script src="contact.js"></script>
+</body>
+</html>

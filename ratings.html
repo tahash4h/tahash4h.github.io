@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book Reviews - Book Finder</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="index.html">
+        <h1>📚 Book Finder</h1>
+      </a>
+    </div>
+    <nav>
+      <a href="booksrec.html">Recommendations</a>
+      <a href="ratings.html">Reviews</a>
+      <a href="booklist.html">Book List</a>
+      <a href="search.html">Search</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="auth-buttons">
+      <a href="#" class="btn btn-login">Login</a>
+      <a href="#" class="btn">Sign Up</a>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <h2>Reader Reviews</h2>
+    <p>Discover what our community thinks about their recent reads!</p>
+
+    <div class="reviews-grid">
+      <div class="review-card">
+        <h3>📖 The Great Gatsby</h3>
+        <div class="author">by F. Scott Fitzgerald</div>
+        <div class="rating">★★★★☆</div>
+        <p class="review-text">"A masterpiece of American literature. Fitzgerald's portrayal of the Jazz Age and the American Dream is timeless and beautifully written."</p>
+        <div class="reviewer">- Sarah Johnson, March 2025</div>
+      </div>
+
+      <div class="review-card">
+        <h3>📖 Atomic Habits</h3>
+        <div class="author">by James Clear</div>
+        <div class="rating">★★★★★</div>
+        <p class="review-text">"Life-changing insights into habit formation. Clear's practical approach and real-world examples make this book invaluable for personal development."</p>
+        <div class="reviewer">- Michael Chen, February 2025</div>
+      </div>
+
+      <div class="review-card">
+        <h3>📖 Project Hail Mary</h3>
+        <div class="author">by Andy Weir</div>
+        <div class="rating">★★★★★</div>
+        <p class="review-text">"An incredible sci-fi adventure that combines hard science with heart. Couldn't put it down! The perfect blend of humor and suspense."</p>
+        <div class="reviewer">- Alex Martinez, March 2025</div>
+      </div>
+
+      <div class="review-card">
+        <h3>📖 Tomorrow, and Tomorrow, and Tomorrow</h3>
+        <div class="author">by Gabrielle Zevin</div>
+        <div class="rating">★★★★★</div>
+        <p class="review-text">"A beautiful exploration of friendship, creativity, and the gaming world. The character development is exceptional."</p>
+        <div class="reviewer">- Emily Wong, January 2025</div>
+      </div>
+
+      <div class="review-card">
+        <h3>📖 Dune</h3>
+        <div class="author">by Frank Herbert</div>
+        <div class="rating">★★★★★</div>
+        <p class="review-text">"A masterpiece of science fiction. The world-building is incredible, and the political intrigue keeps you engaged throughout."</p>
+        <div class="reviewer">- David Miller, March 2025</div>
+      </div>
+
+      <div class="review-card">
+        <h3>📖 The Seven Husbands of Evelyn Hugo</h3>
+        <div class="author">by Taylor Jenkins Reid</div>
+        <div class="rating">★★★★☆</div>
+        <p class="review-text">"A captivating story about old Hollywood glamour with modern sensibilities. The character of Evelyn Hugo is unforgettable."</p>
+        <div class="reviewer">- Rachel Thompson, February 2025</div>
+      </div>
+    </div>
+
+    <section class="review-form-section">
+      <h3>Share Your Thoughts</h3>
+      <form class="review-form">
+        <label for="book">Book Title</label>
+        <input type="text" id="book" placeholder="Enter the book title" required>
+
+        <label for="author">Author</label>
+        <input type="text" id="author" placeholder="Enter the author's name" required>
+
+        <label for="rating">Rating</label>
+        <select id="rating" required>
+          <option value="">Select your rating</option>
+          <option>★★★★★ (Excellent)</option>
+          <option>★★★★☆ (Very Good)</option>
+          <option>★★★☆☆ (Good)</option>
+          <option>★★☆☆☆ (Fair)</option>
+          <option>★☆☆☆☆ (Poor)</option>
+        </select>
+
+        <label for="review">Your Review</label>
+        <textarea id="review" rows="4" placeholder="Share your thoughts about the book..." required></textarea>
+
+        <button type="submit">Submit Review</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>About Book Finder</h3>
+        <p>Your ultimate destination for discovering new books and connecting with fellow readers.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="booksrec.html">Book Recommendations</a></li>
+          <li><a href="ratings.html">Book Reviews</a></li>
+          <li><a href="booklist.html">My Book List</a></li>
+          <li><a href="search.html">Search Books</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect With Us</h3>
+        <div class="social-links">
+          <a href="#" class="social-link">📘 Facebook</a>
+          <a href="#" class="social-link">📸 Instagram</a>
+          <a href="#" class="social-link">🐦 Twitter</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Book Finder. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
