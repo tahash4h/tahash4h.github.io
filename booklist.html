@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List - Book Finder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html">
+                <h1>📚 Book Finder</h1>
+            </a>
+        </div>
+        <nav>
+            <a href="booksrec.html">Recommendations</a>
+            <a href="ratings.html">Reviews</a>
+            <a href="booklist.html">Book List</a>
+            <a href="search.html">Search</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn btn-login">Login</a>
+            <a href="signup.html" class="btn">Sign Up</a>
+        </div>
+        <div class="profile-container">
+            <img src="" alt="Profile" class="profile-picture" id="headerProfilePic">
+            <div class="profile-dropdown">
+                <a href="#" class="profile-dropdown-item" id="signOutBtn">
+                    <i class="fa-solid fa-sign-out-alt"></i>
+                    Sign Out
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <h2>Book List</h2>
+        <p>Search and discover books to add to your reading list!</p>
+        
+        <section class="search-section">
+            <h3>Search for Books</h3>
+            <p class="genre-description">Search by book title or genre to discover your next read.</p>
+            <form class="search-form" id="searchForm">
+                <div class="search-input-group">
+                    <input type="text" id="search-input" class="search-input" placeholder="Search for books..." required>
+                    <button type="submit" class="search-btn">
+                        <span class="search-icon">🔍</span>
+                        Search
+                    </button>
+                </div>
+            </form>
+        </section>
+        
+        <section id="results" class="books-container">
+            <!-- Books will be displayed here -->
+        </section>
+        
+        <section id="pagination" class="pagination">
+            <!-- Pagination buttons will be displayed here -->
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Book Finder</h3>
+                <p>Your ultimate destination for discovering new books and connecting with fellow readers.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="booksrec.html">Book Recommendations</a></li>
+                    <li><a href="ratings.html">Book Reviews</a></li>
+                    <li><a href="booklist.html">My Book List</a></li>
+                    <li><a href="search.html">Search Books</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="#" class="social-link">📘 Facebook</a>
+                    <a href="#" class="social-link">📸 Instagram</a>
+                    <a href="#" class="social-link">🐦 Twitter</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Book Finder. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="booklist.js"></script>
+    <script src="auth-header.js"></script>
+</body>
+</html>
