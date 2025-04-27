@@ -5,6 +5,267 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book List - Book Finder</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .book-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .book-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .book-card-content {
+            padding: 1rem;
+        }
+
+        .book-card h3 {
+            font-size: 1.2rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-card p {
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-description {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .book-description .hidden-text {
+            display: none;
+        }
+
+        .book-description.expanded .hidden-text {
+            display: inline;
+        }
+
+        .read-more-btn {
+            background-color: transparent;
+            color: #5a67d8;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+
+        .read-more-btn:hover {
+            text-decoration: underline;
+        }
+
+        .publish-year {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .heart-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: rgba(229, 62, 62, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .heart-btn:hover {
+            background-color: #e53e3e;
+            transform: scale(1.1);
+        }
+
+        .heart-btn.saved {
+            background-color: #48bb78;
+        }
+
+        .heart-btn.saved:hover {
+            background-color: #38a169;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            padding-left: 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #5a67d8;
+            box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+            pointer-events: none;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-top: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+
+        .search-results.show {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-result-item:hover {
+            background-color: #f7fafc;
+        }
+
+        .search-result-item img {
+            width: 40px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .search-result-item .book-info {
+            flex: 1;
+        }
+
+        .search-result-item .book-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .search-result-item .book-author {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #718096;
+        }
+
+        .loading-search {
+            padding: 20px;
+            text-align: center;
+            color: #718096;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .popular-genres, .reading-tips {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .popular-genres h3, .reading-tips h3 {
+            color: #2d3748;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .genres-grid, .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .genre-card, .tip-card {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 6px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .genre-card:hover, .tip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .genre-card h4, .tip-card h4 {
+            color: #2d3748;
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .genre-card p, .tip-card p {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .popular-genres, .reading-tips {
+                padding: 1.5rem;
+            }
+
+            .genres-grid, .tips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -17,7 +278,7 @@
             <a href="booksrec.html">Recommendations</a>
             <a href="ratings.html">Reviews</a>
             <a href="booklist.html">Book List</a>
-            <a href="search.html">Search</a>
+            <a href="saved.html">Saved Books</a>
             <a href="contact.html">Contact</a>
         </nav>
         <div class="auth-buttons">
@@ -41,13 +302,63 @@
             <p class="genre-description">Search by book title or genre to discover your next read.</p>
             <form class="search-form" id="searchForm">
                 <div class="search-input-group">
-                    <input type="text" id="search-input" class="search-input" placeholder="Search for books..." required>
+                    <div class="search-container">
+                        <i class="search-icon">🔍</i>
+                        <input type="text" id="search-input" class="search-input" placeholder="Search for books..." required>
+                        <div class="search-results" id="searchResults">
+                            <div class="loading-search">Searching...</div>
+                        </div>
+                    </div>
                     <button type="submit" class="search-btn">
-                        <span class="search-icon">🔍</span>
+                        <span class="search-icon"></span>
                         Search
                     </button>
                 </div>
             </form>
+        </section>
+        
+        <section class="popular-genres">
+            <h3>Popular Genres</h3>
+            <div class="genres-grid">
+                <div class="genre-card">
+                    <h4>📚 Fiction</h4>
+                    <p>Explore imaginative stories and creative narratives that transport you to different worlds.</p>
+                </div>
+                <div class="genre-card">
+                    <h4>🔬 Science Fiction</h4>
+                    <p>Discover futuristic worlds, advanced technology, and thought-provoking concepts.</p>
+                </div>
+                <div class="genre-card">
+                    <h4>❤️ Romance</h4>
+                    <p>Dive into heartwarming stories of love, relationships, and emotional journeys.</p>
+                </div>
+                <div class="genre-card">
+                    <h4>🔍 Mystery</h4>
+                    <p>Unravel intriguing puzzles and suspenseful plots that keep you guessing.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="reading-tips">
+            <h3>Reading Tips</h3>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h4>📖 Set Reading Goals</h4>
+                    <p>Challenge yourself with a monthly reading goal to stay motivated and track your progress.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>⏰ Create a Reading Routine</h4>
+                    <p>Dedicate a specific time each day for reading to build a consistent habit.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>📝 Take Notes</h4>
+                    <p>Jot down your thoughts and favorite quotes to enhance your reading experience.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>👥 Join a Book Club</h4>
+                    <p>Connect with other readers to discuss books and discover new perspectives.</p>
+                </div>
+            </div>
         </section>
         
         <section id="results" class="books-container">
@@ -71,25 +382,23 @@
                     <li><a href="booksrec.html">Book Recommendations</a></li>
                     <li><a href="ratings.html">Book Reviews</a></li>
                     <li><a href="booklist.html">My Book List</a></li>
-                    <li><a href="search.html">Search Books</a></li>
+                    <li><a href="saved.html">Saved Books</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3>Connect With Us</h3>
+                <h3>Support Me</h3>
                 <div class="social-links">
-                    <a href="#" class="social-link">📘 Facebook</a>
-                    <a href="#" class="social-link">📸 Instagram</a>
-                    <a href="#" class="social-link">🐦 Twitter</a>
+                    <a href="https://github.com/tahash4h" target="_blank" class="social-link">
+                        <i class="fa-brands fa-github"></i> GitHub
+                    </a>
+                    <a href="https://www.buymeacoffee.com/endrick" target="_blank" class="social-link">
+                        <i class="fa-solid fa-mug-hot"></i> Buy Me A Coffee
+                    </a>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
             <p>&copy; 2025 Book Finder. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Cookie Policy</a>
-            </div>
         </div>
     </footer>
 

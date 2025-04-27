@@ -10,8 +10,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function checkAuthStatus() {
         const userData = localStorage.getItem('userData');
         if (userData) {
-            const user = JSON.parse(userData);
-            showProfile(user);
+            try {
+                const user = JSON.parse(userData);
+                showProfile(user);
+            } catch (error) {
+                console.error('Error parsing user data:', error);
+                showAuthButtons();
+            }
         } else {
             showAuthButtons();
         }
@@ -19,34 +24,68 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Show profile picture and hide auth buttons
     function showProfile(userData) {
-        profilePic.src = userData.picture;
-        authButtons.classList.add('hidden');
-        profileContainer.style.display = 'block';
+        if (profilePic) {
+            profilePic.src = userData.picture || '';
+            profilePic.alt = userData.name || 'Profile';
+            profilePic.style.display = 'block';
+            
+            // Debug log to check if picture URL is available
+            console.log('Profile picture URL:', userData.picture);
+            
+            // Force image to reload
+            profilePic.onload = function() {
+                console.log('Profile picture loaded successfully');
+            };
+            
+            profilePic.onerror = function() {
+                console.error('Failed to load profile picture');
+                // Set a default profile picture if the original fails to load
+                profilePic.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(userData.name || 'User');
+            };
+        }
+        if (authButtons) {
+            authButtons.style.display = 'none';
+        }
+        if (profileContainer) {
+            profileContainer.style.display = 'flex';
+        }
     }
 
     // Show auth buttons and hide profile
     function showAuthButtons() {
-        authButtons.classList.remove('hidden');
-        profileContainer.style.display = 'none';
+        if (authButtons) {
+            authButtons.style.display = 'flex';
+        }
+        if (profileContainer) {
+            profileContainer.style.display = 'none';
+        }
     }
 
     // Toggle dropdown when clicking profile picture
-    profilePic.addEventListener('click', function(e) {
-        e.stopPropagation();
-        profileDropdown.classList.toggle('show');
-    });
+    if (profilePic) {
+        profilePic.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (profileDropdown) {
+                profileDropdown.classList.toggle('show');
+            }
+        });
+    }
 
     // Close dropdown when clicking outside
     document.addEventListener('click', function() {
-        profileDropdown.classList.remove('show');
+        if (profileDropdown) {
+            profileDropdown.classList.remove('show');
+        }
     });
 
     // Handle sign out
-    signOutBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        localStorage.removeItem('userData');
-        window.location.href = 'index.html';
-    });
+    if (signOutBtn) {
+        signOutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('userData');
+            window.location.href = 'index.html';
+        });
+    }
 
     // Initial check
     checkAuthStatus();

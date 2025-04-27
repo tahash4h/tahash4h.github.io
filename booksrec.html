@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Recommendations - Book Finder</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .random-book-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .book-display {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .book-cover {
+            width: 200px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .book-info {
+            flex: 1;
+        }
+
+        .book-title {
+            font-size: 1.5rem;
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+
+        .book-author {
+            color: #4a5568;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-description {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .book-description .hidden-text {
+            display: none;
+        }
+
+        .book-description.expanded .hidden-text {
+            display: inline;
+        }
+
+        .read-more-btn {
+            background-color: transparent;
+            color: #5a67d8;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+
+        .read-more-btn:hover {
+            text-decoration: underline;
+        }
+
+        .book-meta {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .generate-btn {
+            background-color: #5a67d8;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 2rem 0;
+        }
+
+        .generate-btn:hover {
+            background-color: #4c51bf;
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: #4a5568;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #5a67d8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .no-book {
+            text-align: center;
+            padding: 2rem;
+            color: #4a5568;
+        }
+
+        .save-btn {
+            background-color: #48bb78;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 1rem;
+        }
+
+        .save-btn:hover {
+            background-color: #38a169;
+        }
+
+        .save-btn.saved {
+            background-color: #e53e3e;
+            cursor: pointer;
+        }
+
+        .save-btn.saved:hover {
+            background-color: #c53030;
+        }
+
+        .remove-btn {
+            background-color: #e53e3e;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 1rem;
+            margin-left: 1rem;
+        }
+
+        .remove-btn:hover {
+            background-color: #c53030;
+        }
+
+        @media (max-width: 768px) {
+            .book-display {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .book-cover {
+                width: 150px;
+                height: 225px;
+            }
+
+            .book-info {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html">
+                <h1>📚 Book Finder</h1>
+            </a>
+        </div>
+        <nav>
+            <a href="booksrec.html">Recommendations</a>
+            <a href="ratings.html">Reviews</a>
+            <a href="booklist.html">Book List</a>
+            <a href="saved.html">Saved Books</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn btn-login">Login</a>
+            <a href="signup.html" class="btn">Sign Up</a>
+        </div>
+        <div class="profile-container">
+            <img src="" alt="Profile" class="profile-picture" id="headerProfilePic">
+            <div class="profile-dropdown">
+                <a href="#" class="profile-dropdown-item" id="signOutBtn">
+                    <i class="fa-solid fa-sign-out-alt"></i>
+                    Sign Out
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content" style="width: 100%; text-align: center;">
+            <h2>Discover Your Next Read</h2>
+            <p>Get personalized book recommendations and explore random books from our vast collection.</p>
+        </div>
+    </section>
+
+    <section class="random-book-container">
+        <div class="book-display" id="bookDisplay" style="display: none;">
+            <img src="" alt="Book Cover" class="book-cover" id="bookCover">
+            <div class="book-info">
+                <h3 class="book-title" id="bookTitle"></h3>
+                <p class="book-author" id="bookAuthor"></p>
+                <p class="book-description" id="bookDescription"></p>
+                <button class="read-more-btn" id="readMoreBtn" style="display: none;">Read more</button>
+                <p class="book-meta" id="bookMeta"></p>
+                <button class="save-btn" id="saveBtn">
+                    <span>❤️</span>
+                    Save Book
+                </button>
+            </div>
+        </div>
+
+        <button class="generate-btn" id="generateBtn">
+            <span>🎲</span>
+            Generate Random Book
+        </button>
+
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p>Finding your next great read...</p>
+        </div>
+
+        <div class="no-book" id="noBook" style="display: none;">
+            <p>No book found. Try generating again!</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Book Finder</h3>
+                <p>Your ultimate destination for discovering new books and connecting with fellow readers.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="booksrec.html">Book Recommendations</a></li>
+                    <li><a href="ratings.html">Book Reviews</a></li>
+                    <li><a href="booklist.html">My Book List</a></li>
+                    <li><a href="saved.html">Saved Books</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support Me</h3>
+                <div class="social-links">
+                    <a href="https://github.com/tahash4h" target="_blank" class="social-link">
+                        <i class="fa-brands fa-github"></i> GitHub
+                    </a>
+                    <a href="https://www.buymeacoffee.com/endrick" target="_blank" class="social-link">
+                        <i class="fa-solid fa-mug-hot"></i> Buy Me A Coffee
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Book Finder. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Configuration
+        const config = {
+            apiUrl: (query) => `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`,
+            defaultCover: "https://via.placeholder.com/200x300?text=No+Image"
+        };
+
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        document.body.appendChild(notification);
+
+        // Function to show notification
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                    notification.style.animation = 'slideIn 0.3s ease-out';
+                }, 300);
+            }, 2000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const generateBtn = document.getElementById('generateBtn');
+            const loading = document.getElementById('loading');
+            const bookDisplay = document.getElementById('bookDisplay');
+            const noBook = document.getElementById('noBook');
+            const bookCover = document.getElementById('bookCover');
+            const bookTitle = document.getElementById('bookTitle');
+            const bookAuthor = document.getElementById('bookAuthor');
+            const bookDescription = document.getElementById('bookDescription');
+            const bookMeta = document.getElementById('bookMeta');
+            const saveBtn = document.getElementById('saveBtn');
+            const readMoreBtn = document.getElementById('readMoreBtn');
+
+            let currentBook = null;
+
+            function truncateDescription(description) {
+                const words = description.split(' ');
+                if (words.length <= 50) {
+                    return { visibleText: description, hiddenText: '', isTruncated: false };
+                }
+                return {
+                    visibleText: words.slice(0, 50).join(' '),
+                    hiddenText: ' ' + words.slice(50).join(' '),
+                    isTruncated: true
+                };
+            }
+
+            function toggleDescription() {
+                const description = document.getElementById('bookDescription');
+                const isExpanded = description.classList.contains('expanded');
+                
+                if (isExpanded) {
+                    description.classList.remove('expanded');
+                    readMoreBtn.textContent = 'Read more';
+                } else {
+                    description.classList.add('expanded');
+                    readMoreBtn.textContent = 'Read less';
+                }
+            }
+
+            async function fetchRandomBook() {
+                try {
+                    loading.style.display = 'block';
+                    bookDisplay.style.display = 'none';
+                    noBook.style.display = 'none';
+
+                    // Generate a random search term to get a random book
+                    const randomTerms = ['fiction', 'nonfiction', 'mystery', 'romance', 'science', 'history', 'biography', 'fantasy'];
+                    const randomTerm = randomTerms[Math.floor(Math.random() * randomTerms.length)];
+                    const response = await fetch(config.apiUrl(randomTerm));
+                    
+                    if (!response.ok) throw new Error("Failed to fetch data");
+                    
+                    const data = await response.json();
+                    const books = data.docs;
+                    
+                    if (!books || books.length === 0) {
+                        noBook.style.display = 'block';
+                        return;
+                    }
+
+                    // Select a random book from the results
+                    const randomBook = books[Math.floor(Math.random() * books.length)];
+
+                    // Fetch detailed book information including description
+                    let description = "No description available";
+                    if (randomBook.key) {
+                        const workResponse = await fetch(`https://openlibrary.org${randomBook.key}.json`);
+                        if (workResponse.ok) {
+                            const workData = await workResponse.json();
+                            if (workData.description) {
+                                description = typeof workData.description === 'string' 
+                                    ? workData.description 
+                                    : workData.description.value || "No description available";
+                            }
+                        }
+                    }
+
+                    currentBook = {
+                        title: randomBook.title,
+                        author: randomBook.author_name ? randomBook.author_name.join(", ") : "Unknown Author",
+                        coverUrl: randomBook.cover_i 
+                            ? `https://covers.openlibrary.org/b/id/${randomBook.cover_i}-L.jpg`
+                            : config.defaultCover,
+                        publishYear: randomBook.first_publish_year || "Year unknown",
+                        description: description
+                    };
+
+                    // Update UI
+                    bookCover.src = currentBook.coverUrl;
+                    bookTitle.textContent = currentBook.title;
+                    bookAuthor.textContent = currentBook.author;
+                    
+                    // Handle description truncation
+                    const { visibleText, hiddenText, isTruncated } = truncateDescription(currentBook.description);
+                    const descriptionElement = document.getElementById('bookDescription');
+                    descriptionElement.innerHTML = visibleText + 
+                        (isTruncated ? `<span class="hidden-text">${hiddenText}</span>` : '');
+                    descriptionElement.classList.remove('expanded');
+                    
+                    readMoreBtn.style.display = isTruncated ? 'block' : 'none';
+                    readMoreBtn.textContent = 'Read more';
+
+                    bookMeta.textContent = `First published: ${currentBook.publishYear}`;
+
+                    // Check if book is already saved
+                    const savedBooks = JSON.parse(localStorage.getItem('savedBooks')) || [];
+                    const isSaved = savedBooks.some(b => 
+                        b.title === currentBook.title && b.author === currentBook.author
+                    );
+                    
+                    saveBtn.className = `save-btn ${isSaved ? 'saved' : ''}`;
+                    saveBtn.innerHTML = `<span>${isSaved ? '🗑️' : '❤️'}</span> ${isSaved ? 'Remove Book' : 'Save Book'}`;
+
+                    bookDisplay.style.display = 'flex';
+                } catch (error) {
+                    console.error('Error fetching book:', error);
+                    noBook.style.display = 'block';
+                    showNotification('Error fetching book. Please try again.', 'error');
+                } finally {
+                    loading.style.display = 'none';
+                }
+            }
+
+            function toggleBookSave() {
+                if (!currentBook) return;
+
+                const savedBooks = JSON.parse(localStorage.getItem('savedBooks')) || [];
+                const isSaved = savedBooks.some(book => 
+                    book.title === currentBook.title && book.author === currentBook.author
+                );
+
+                if (!isSaved) {
+                    // Save the book
+                    savedBooks.push(currentBook);
+                    localStorage.setItem('savedBooks', JSON.stringify(savedBooks));
+                    saveBtn.className = 'save-btn saved';
+                    saveBtn.innerHTML = '<span>🗑️</span> Remove Book';
+                    showNotification(`"${currentBook.title}" saved`);
+                } else {
+                    // Remove the book
+                    const updatedBooks = savedBooks.filter(book => 
+                        !(book.title === currentBook.title && book.author === currentBook.author)
+                    );
+                    localStorage.setItem('savedBooks', JSON.stringify(updatedBooks));
+                    saveBtn.className = 'save-btn';
+                    saveBtn.innerHTML = '<span>❤️</span> Save Book';
+                    showNotification(`"${currentBook.title}" removed from saved books`);
+                }
+            }
+
+            generateBtn.addEventListener('click', fetchRandomBook);
+            saveBtn.addEventListener('click', toggleBookSave);
+            readMoreBtn.addEventListener('click', toggleDescription);
+
+            // Remove automatic book generation on page load
+        });
+    </script>
+    <script src="auth-header.js"></script>
+
+ 
+</body>
+</html>

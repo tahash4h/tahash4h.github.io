@@ -62,7 +62,7 @@
             <a href="booksrec.html">Recommendations</a>
             <a href="ratings.html">Reviews</a>
             <a href="booklist.html">Book List</a>
-            <a href="search.html">Search</a>
+            <a href="saved.html">Saved Books</a>
             <a href="contact.html">Contact</a>
         </nav>
         <div class="auth-buttons">
@@ -83,9 +83,11 @@
     <main class="auth-container">
         <div class="auth-form-container">
             <h2>Create Account</h2>
+            
+            <p style="text-align: center; margin: 20px 0;">Sign up with your Google account to access all features.</p>
 
             <!-- Google Sign-In Button -->
-            <div class="google-btn-wrapper">
+            <div class="google-btn-wrapper" style="margin: 40px 0;">
                 <div id="g_id_onload"
                      data-client_id="339815443597-is0vm4bnlgq6qh053hf3d2m8el05bhf6.apps.googleusercontent.com"
                      data-context="signup"
@@ -101,49 +103,8 @@
                      data-logo_alignment="left">
                 </div>
             </div>
-
-            <div class="or-divider">OR</div>
-
-            <form class="auth-form">
-                <div class="form-group">
-                    <label for="firstname">First Name</label>
-                    <input type="text" id="firstname" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="lastname">Last Name</label>
-                    <input type="text" id="lastname" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="dob">Date of Birth</label>
-                    <input type="date" id="dob" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="phonenum">Phone Number</label>
-                    <input type="tel" id="phonenum">
-                </div>
-
-                <div class="form-group checkbox">
-                    <input type="checkbox" id="terms" required>
-                    <label for="terms">I agree to the Terms of Service</label>
-                </div>
-
-                <button type="submit" class="auth-button">Create Account</button>
-                
-                <p class="auth-link">Already have an account? <a href="login.html">Log In</a></p>
-            </form>
+            
+            <p class="auth-link" style="text-align: center; margin-top: 30px;">Already have an account? <a href="login.html">Log In</a></p>
 
             <!-- User Profile Section (Hidden by default) -->
             <div id="userProfile" class="user-profile">
@@ -167,15 +128,18 @@
                     <li><a href="booksrec.html">Book Recommendations</a></li>
                     <li><a href="ratings.html">Book Reviews</a></li>
                     <li><a href="booklist.html">My Book List</a></li>
-                    <li><a href="search.html">Search Books</a></li>
+                    <li><a href="saved.html">Saved Books</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3>Connect With Us</h3>
+                <h3>Support Me</h3>
                 <div class="social-links">
-                    <a href="#" class="social-link">📘 Facebook</a>
-                    <a href="#" class="social-link">📸 Instagram</a>
-                    <a href="#" class="social-link">🐦 Twitter</a>
+                    <a href="https://github.com/tahash4h" target="_blank" class="social-link">
+                        <i class="fa-brands fa-github"></i> GitHub
+                    </a>
+                    <a href="https://www.buymeacoffee.com/endrick" target="_blank" class="social-link">
+                        <i class="fa-solid fa-mug-hot"></i> Buy Me A Coffee
+                    </a>
                 </div>
             </div>
         </div>
@@ -185,25 +149,49 @@
     </footer>
 
     <script>
-        // Add the same JavaScript functions as in login.html
+        // Handle Google Sign-In response
         function handleCredentialResponse(response) {
-            const decoded = jwt_decode(response.credential);
-            
-            const userData = {
-                name: decoded.name,
-                email: decoded.email,
-                picture: decoded.picture,
-                token: response.credential
-            };
-            localStorage.setItem('userData', JSON.stringify(userData));
-            
-            displayUserProfile(userData);
+            try {
+                console.log('Google Sign-In response received:', response);
+                
+                // Decode the JWT token
+                const decoded = jwt_decode(response.credential);
+                
+                console.log('Google Sign-In successful, profile data:', decoded);
+                
+                // Store user data in localStorage
+                const userData = {
+                    name: decoded.name,
+                    email: decoded.email,
+                    picture: decoded.picture,
+                    token: response.credential
+                };
+                localStorage.setItem('userData', JSON.stringify(userData));
+                
+                // Update header profile picture
+                const headerProfilePic = document.getElementById('headerProfilePic');
+                if (headerProfilePic) {
+                    headerProfilePic.src = userData.picture;
+                    headerProfilePic.alt = userData.name;
+                    console.log('Header profile picture updated:', userData.picture);
+                }
+                
+                // Update UI
+                displayUserProfile(userData);
+                
+                // Redirect to home page after successful signup
+                setTimeout(function() {
+                    window.location.href = 'index.html';
+                }, 1000);
+            } catch (error) {
+                console.error('Error handling Google Sign-In:', error);
+                alert('An error occurred during sign-up. Please try again.');
+            }
         }
 
         function displayUserProfile(userData) {
-            document.querySelector('.auth-form').style.display = 'none';
             document.querySelector('.google-btn-wrapper').style.display = 'none';
-            document.querySelector('.or-divider').style.display = 'none';
+            document.querySelector('.auth-link').style.display = 'none';
             
             const userProfile = document.getElementById('userProfile');
             const userImage = document.getElementById('userImage');
@@ -218,13 +206,7 @@
 
         function signOut() {
             localStorage.removeItem('userData');
-            
-            document.querySelector('.auth-form').style.display = 'block';
-            document.querySelector('.google-btn-wrapper').style.display = 'flex';
-            document.querySelector('.or-divider').style.display = 'block';
-            document.getElementById('userProfile').style.display = 'none';
-            
-            location.reload();
+            window.location.href = 'index.html';
         }
 
         window.onload = function() {

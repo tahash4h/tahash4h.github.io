@@ -17,7 +17,7 @@
       <a href="booksrec.html">Recommendations</a>
       <a href="ratings.html">Reviews</a>
       <a href="booklist.html">Book List</a>
-      <a href="search.html">Search</a>
+      <a href="saved.html">Saved Books</a>
       <a href="contact.html">Contact</a>
     </nav>
     <div class="auth-buttons">
@@ -91,7 +91,10 @@
 
     <section class="review-form-section">
       <h3>Share Your Thoughts</h3>
-      <form class="review-form">
+      <div id="review-login-message" style="display: none; text-align: center; padding: 20px;">
+        <p>Please <a href="login.html" class="btn">Login</a> or <a href="signup.html" class="btn">Sign Up</a> to share your review.</p>
+      </div>
+      <form class="review-form" id="review-form" style="display: none;">
         <label for="book">Book Title</label>
         <input type="text" id="book" placeholder="Enter the book title" required>
 
@@ -118,37 +121,318 @@
 
   <footer>
     <div class="footer-content">
-      <div class="footer-section">
-        <h3>About Book Finder</h3>
-        <p>Your ultimate destination for discovering new books and connecting with fellow readers.</p>
-      </div>
-      <div class="footer-section">
-        <h3>Quick Links</h3>
-        <ul>
-          <li><a href="booksrec.html">Book Recommendations</a></li>
-          <li><a href="ratings.html">Book Reviews</a></li>
-          <li><a href="booklist.html">My Book List</a></li>
-          <li><a href="search.html">Search Books</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h3>Connect With Us</h3>
-        <div class="social-links">
-          <a href="#" class="social-link">📘 Facebook</a>
-          <a href="#" class="social-link">📸 Instagram</a>
-          <a href="#" class="social-link">🐦 Twitter</a>
+        <div class="footer-section">
+            <h3>About Book Finder</h3>
+            <p>Your ultimate destination for discovering new books and connecting with fellow readers.</p>
         </div>
-      </div>
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="booksrec.html">Book Recommendations</a></li>
+                <li><a href="ratings.html">Book Reviews</a></li>
+                <li><a href="booklist.html">My Book List</a></li>
+                <li><a href="saved.html">Saved Books</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Support Me</h3>
+            <div class="social-links">
+                <a href="https://github.com/tahash4h" target="_blank" class="social-link">
+                    <i class="fa-brands fa-github"></i> GitHub
+                </a>
+                <a href="https://www.buymeacoffee.com/endrick" target="_blank" class="social-link">
+                    <i class="fa-solid fa-mug-hot"></i> Buy Me A Coffee
+                </a>
+            </div>
+        </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2025 Book Finder. All rights reserved.</p>
-      <div class="footer-links">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Cookie Policy</a>
-      </div>
+        <p>&copy; 2025 Book Finder. All rights reserved.</p>
     </div>
-  </footer>
+</footer>
   <script src="auth-header.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const reviewForm = document.getElementById('review-form');
+      const reviewLoginMessage = document.getElementById('review-login-message');
+      const reviewsGrid = document.querySelector('.reviews-grid');
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      document.body.appendChild(notification);
+      
+      // Check if user is logged in and show/hide review form accordingly
+      function checkLoginStatus() {
+        const userData = localStorage.getItem('userData');
+        if (userData) {
+          // User is logged in, show the review form
+          reviewForm.style.display = 'block';
+          reviewLoginMessage.style.display = 'none';
+        } else {
+          // User is not logged in, show login message
+          reviewForm.style.display = 'none';
+          reviewLoginMessage.style.display = 'block';
+        }
+      }
+      
+      // Initial check
+      checkLoginStatus();
+
+      // Function to show notification
+      function showNotification(message, type = 'success') {
+        notification.textContent = message;
+        notification.className = `notification ${type}`;
+        notification.style.display = 'block';
+        
+        setTimeout(() => {
+          notification.style.animation = 'fadeOut 0.3s ease-out';
+          setTimeout(() => {
+            notification.style.display = 'none';
+            notification.style.animation = 'slideIn 0.3s ease-out';
+          }, 300);
+        }, 2000);
+      }
+
+      // Function to create a review card
+      function createReviewCard(review, isUserReview = false) {
+        const card = document.createElement('div');
+        card.className = 'review-card';
+        card.dataset.id = review.id;
+        
+        const removeBtn = isUserReview ? `
+          <button class="remove-review-btn" title="Remove review">×</button>
+        ` : '';
+        
+        card.innerHTML = `
+          ${removeBtn}
+          <h3>📖 ${review.book}</h3>
+          <div class="author">by ${review.author}</div>
+          <div class="rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
+          <p class="review-text">"${review.review}"</p>
+          <div class="reviewer">- ${review.reviewer}, ${review.date}</div>
+        `;
+
+        if (isUserReview) {
+          const removeBtn = card.querySelector('.remove-review-btn');
+          removeBtn.addEventListener('click', () => removeReview(review.id));
+        }
+
+        return card;
+      }
+
+      // Function to remove a review
+      function removeReview(reviewId) {
+        if (!confirm('Are you sure you want to remove this review?')) {
+          return;
+        }
+        
+        if (!confirm('This action cannot be undone. Are you absolutely sure?')) {
+          return;
+        }
+
+        const reviews = JSON.parse(localStorage.getItem('userReviews')) || [];
+        const updatedReviews = reviews.filter(review => review.id !== reviewId);
+        localStorage.setItem('userReviews', JSON.stringify(updatedReviews));
+        
+        const card = document.querySelector(`.review-card[data-id="${reviewId}"]`);
+        if (card) {
+          card.remove();
+          showNotification('Review removed successfully');
+        }
+      }
+
+      // Function to display all reviews
+      function displayReviews() {
+        let userReviews = JSON.parse(localStorage.getItem('userReviews')) || [];
+        const userData = JSON.parse(localStorage.getItem('userData')) || {};
+        const username = userData.name || "Anonymous User";
+        
+        // Update any reviews that have "You" as the reviewer with the actual username
+        let reviewsUpdated = false;
+        userReviews = userReviews.map(review => {
+          if (review.reviewer === "You") {
+            reviewsUpdated = true;
+            return {...review, reviewer: username};
+          }
+          return review;
+        });
+        
+        // Save updated reviews if any changes were made
+        if (reviewsUpdated) {
+          localStorage.setItem('userReviews', JSON.stringify(userReviews));
+        }
+        
+        // Clear existing reviews
+        reviewsGrid.innerHTML = '';
+        
+        // Add user-submitted reviews first
+        userReviews.forEach(review => {
+          reviewsGrid.appendChild(createReviewCard(review, true));
+        });
+
+        // Add static reviews
+        const staticReviews = [
+          {
+            book: "The Great Gatsby",
+            author: "F. Scott Fitzgerald",
+            rating: 4,
+            review: "A masterpiece of American literature. Fitzgerald's portrayal of the Jazz Age and the American Dream is timeless and beautifully written.",
+            reviewer: "Sarah Johnson",
+            date: "March 2025"
+          },
+          {
+            book: "Atomic Habits",
+            author: "James Clear",
+            rating: 5,
+            review: "Life-changing insights into habit formation. Clear's practical approach and real-world examples make this book invaluable for personal development.",
+            reviewer: "Michael Chen",
+            date: "February 2025"
+          },
+          {
+            book: "Project Hail Mary",
+            author: "Andy Weir",
+            rating: 5,
+            review: "An incredible sci-fi adventure that combines hard science with heart. Couldn't put it down! The perfect blend of humor and suspense.",
+            reviewer: "Alex Martinez",
+            date: "March 2025"
+          },
+          {
+            book: "Tomorrow, and Tomorrow, and Tomorrow",
+            author: "Gabrielle Zevin",
+            rating: 5,
+            review: "A beautiful exploration of friendship, creativity, and the gaming world. The character development is exceptional.",
+            reviewer: "Emily Wong",
+            date: "January 2025"
+          },
+          {
+            book: "Dune",
+            author: "Frank Herbert",
+            rating: 5,
+            review: "A masterpiece of science fiction. The world-building is incredible, and the political intrigue keeps you engaged throughout.",
+            reviewer: "David Miller",
+            date: "March 2025"
+          },
+          {
+            book: "The Seven Husbands of Evelyn Hugo",
+            author: "Taylor Jenkins Reid",
+            rating: 4,
+            review: "A captivating story about old Hollywood glamour with modern sensibilities. The character of Evelyn Hugo is unforgettable.",
+            reviewer: "Rachel Thompson",
+            date: "February 2025"
+          }
+        ];
+
+        staticReviews.forEach(review => {
+          reviewsGrid.appendChild(createReviewCard(review));
+        });
+      }
+
+      // Handle form submission
+      reviewForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const book = document.getElementById('book').value;
+        const author = document.getElementById('author').value;
+        const rating = document.getElementById('rating').value;
+        const review = document.getElementById('review').value;
+        
+        if (!book || !author || !rating || !review) {
+          showNotification('Please fill in all fields', 'error');
+          return;
+        }
+        
+        // Get user data from localStorage
+        const userData = JSON.parse(localStorage.getItem('userData')) || {};
+        const username = userData.name || "Anonymous User";
+        
+        const newReview = {
+          id: Date.now().toString(),
+          book,
+          author,
+          rating: rating.split(' ')[0].length,
+          review,
+          reviewer: username,
+          date: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+        };
+
+        const reviews = JSON.parse(localStorage.getItem('userReviews')) || [];
+        reviews.push(newReview);
+        localStorage.setItem('userReviews', JSON.stringify(reviews));
+
+        displayReviews();
+        reviewForm.reset();
+        showNotification('Review submitted successfully');
+      });
+
+      // Initial display of reviews
+      displayReviews();
+    });
+  </script>
+  <style>
+    .remove-review-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: rgba(255, 68, 68, 0.9);
+      color: white;
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: opacity 0.2s ease;
+      opacity: 0;
+    }
+
+    .review-card:hover .remove-review-btn {
+      opacity: 1;
+    }
+
+    .remove-review-btn:hover {
+      opacity: 0.9;
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 12px 24px;
+      border-radius: 4px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 14px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      display: none;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .notification.error {
+      background-color: #f44336;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+  </style>
 </body>
 </html>
